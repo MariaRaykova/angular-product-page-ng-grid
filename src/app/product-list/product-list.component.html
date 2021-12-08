@@ -1,0 +1,73 @@
+<div
+  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+>
+  <h2 class="h2">Students List</h2>
+  <a
+    routerLink="/add-product"
+    class="btn btn-success"
+    *ngIf="hideWhenNoStudent"
+  >
+    Add Product
+  </a>
+</div>
+
+<div class="pricing-header mx-auto">
+  <div class="no-data text-center" *ngIf="preLoader">
+    <img src="assets/preloader.gif" class="preloader-icon" alt="No product" />
+  </div>
+
+  <div class="no-data text-center" *ngIf="noData">
+    <img src="assets/no-product.svg" class="nodata-msg" alt="No product" />
+    <p class="nodata-msg">No product added yet!</p>
+    <a routerLink="/add-product" class="btn btn-success">
+      Add Product
+    </a>
+  </div>
+
+  <div class="table-responsive" *ngIf="hideWhenNoProduct">
+    <table
+      class="table table-bordered table-responsive-sm table-responsive-md table-responsive-lg"
+    >
+      <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Price</th>
+          <th scope="col">Category</th>
+          <th scope="col">Image</th>
+          <th class="text-center" scope="col">Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let product of Product | paginate: { itemsPerPage: 7, currentPage: p }; let i = index;"
+        >
+          <th scope="row">{{product.$key}}</th>
+          <td>{{product.title}}</td>
+          <td>{{product.description}}</td>
+          <td>{{product.price}}</td>
+          <td>{{product.category}}</td>
+          <td>{{product.image}}</td>
+          <td class="text-center action-block">
+            <span
+              class="mr-2 btn btn-outline-primary btn-sm"
+              routerLink="/edit-product/{{product.$key}}"
+              >Edit</span
+            >
+            <span
+              class="btn btn-outline-danger btn-sm"
+              (click)="deleteProduct(product)"
+              >Delete</span
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <pagination-controls
+    (pageChange)="p = $event"
+    autoHide="true"
+    responsive="true"
+  ></pagination-controls>
+</div>
